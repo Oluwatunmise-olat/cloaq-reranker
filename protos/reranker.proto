@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package reranker;
+
+message Document {
+  string page_content = 1;
+  map<string, string> metadata = 2;
+}
+
+message RerankRequest {
+  string query = 1;
+  repeated Document documents = 2;
+}
+
+message RerankResultItem {
+  float score = 1;
+  int32 index = 2;
+}
+
+message RerankResponse {
+  repeated RerankResultItem results = 1;
+}
+
+service RerankerService {
+  rpc Rerank (RerankRequest) returns (RerankResponse);
+}

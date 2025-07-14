@@ -32,7 +32,7 @@ gRPC service that reranks documents by relevance using a Sentence-Transformers C
 
 ```bash
   python3 -m venv .venv
-  source .venv/bin/activate
+  source venv/bin/activate
 ```
 
 3. Install dependencies:

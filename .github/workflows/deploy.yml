@@ -1,4 +1,4 @@
-name: theCloaq Reranker Deployment
+name: theCloaq Reranker Service Deployment
 on:
   push:
     branches:

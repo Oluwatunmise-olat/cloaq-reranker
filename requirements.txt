@@ -34,7 +34,7 @@ setuptools==80.9.0
 sympy==1.14.0
 threadpoolctl==3.6.0
 tokenizers==0.21.2
-torch==2.7.1
+# torch installed separately in Dockerfile with CPU-only version
 tqdm==4.67.1
 transformers==4.53.2
 types-protobuf==6.30.2.20250703

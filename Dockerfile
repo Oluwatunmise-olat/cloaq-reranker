@@ -1,27 +1,29 @@
-FROM python:3.11-slim
+FROM ghcr.io/astral-sh/uv:python3.11-bookworm-slim
+
+RUN groupadd --system --gid 999 nonroot \
+ && useradd --system --gid 999 --uid 999 --create-home nonroot
 
 WORKDIR /app
 
-# Install build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+ENV UV_NO_DEV=1
 
-# Install CPU-only PyTorch first (much smaller than full PyTorch)
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project
 
-# Install remaining dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . /app
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked
 
-# Cleanup build dependencies
-RUN apt-get purge -y build-essential && apt-get autoremove -y
+ENV PATH="/app/.venv/bin:$PATH"
 
-COPY protos ./protos
-COPY src ./src
+ENTRYPOINT []
 
-ENV PYTHONUNBUFFERED=1
+USER nonroot
 
 EXPOSE 50051
 
-CMD ["python", "-m", "src.reranker.main"]
+CMD ["cloaq-reranker"]

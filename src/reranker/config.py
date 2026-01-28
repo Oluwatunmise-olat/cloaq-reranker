@@ -2,6 +2,7 @@ import os
 import sys
 import logging
 from dataclasses import dataclass
+from dotenv import load_dotenv
 
 logging.basicConfig(
     level=logging.INFO,
@@ -23,6 +24,7 @@ class Config:
 
 
 def load_config() -> Config:
+    load_dotenv()
     try:
         model_name = os.getenv(
             "RERANKER_MODEL_NAME",

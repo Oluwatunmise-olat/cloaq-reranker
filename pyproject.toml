@@ -30,7 +30,13 @@ dev-dependencies = [
     "mypy==1.16.1",
     "mypy-protobuf==3.6.0",
     "types-protobuf==6.30.2.20250703",
+    "pytest>=8.0",
+    "pytest-mock>=3.14",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
